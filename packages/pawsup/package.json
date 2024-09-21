@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "module": "src/pawsup.ts",
   "type": "module",
+  "scripts": {
+    "build": "bun build ./src/pawsup.ts --minify --sourcemap=linked --outdir=out && tsc src/pawsup.ts --declaration --emitDeclarationOnly --outDir ./out"
+  },
   "devDependencies": {
     "@types/bun": "^1.1.9"
   },
