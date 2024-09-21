@@ -1,4 +1,182 @@
-function O(C){let E="",z=0,G;while(z<C.length){let H=C[z];if((G=H==="*"?"strong":H==="_"?"em":H==="~"?"strike":"")&&(z===0||!/\s/.test(C[z+1]))){let F=-1;for(let f=z+1;f<C.length;f++)if(C[f]===H&&!/[\s\\]/.test(C[f-1]??" ")&&/[\s_*~`]/.test(C[f+1]??" ")){F=f;break}if(F!==-1){let f=C.slice(z+1,F);if(!f.trim())E+=H+H;else E+=`<${G}>${O(f)}</${G}>`;z=F+1;continue}}else if(H==="`"&&/\s/.test(C[z-1]??" ")){let F=-1;for(let f=z+1;f<C.length;f++)if(C[f]==="`"&&!/[\\]/.test(C[f-1]??" ")){F=f;break}if(F!==-1){G="code";let f=C.slice(z+1,F).replace(/\\`/g,"`");E+=`<${G}>${f}</${G}>`,z=F+1;continue}}else if(/^https?:\/\/[a-zA-Z0-9\-]/.test(C.slice(z))){let F=z;while(F<C.length&&!/\s/.test(C[F]))F++;let f=C.slice(z,F);E+=`<a href="${f}">${f}</a>`,z=F;continue}E+=H,z++}return E}function T(C){let E=[],z=C.split("\n");for(let B=0;B<z.length;B++){let q=z[B];while(z[B]&&/\\$/.test(z[B]))q=q.slice(0,-1)+(z[++B]??"");E.push(q)}let G=[],H=0,F="",f=()=>{if(F.trim())G.push(`<p>${O(F.trim().replace(/\n/g,"<br>\n"))}</p>`);F=""};for(let B=0;B<E.length;){let q=E[B++];if(/^>/.test(q)){f();let J=0;while(q[J]==">")J++;G.push(`<h${J}>${O(q.slice(J).trim())}</h${J}>`)}else if(/^\|\s/.test(q)){f();while(/^\|\s/.test(E[B]))q+="\n"+E[B].slice(2),B++;G.push(`<blockquote>${O(q.slice(1).trim())}</blockquote>`)}else if(/^\=\=\=\=*$/.test(q))f(),G.push("<hr>");else if(/^\/\/.*$/.test(q))f();else if(/^@\S*$/.test(q)){if(f(),q=q.slice(1),/^https?:\/\/.*\.(jpg|png|gif|webp)(\?.*)?$/.test(q))G.push(`<img src="${q}">`)}else if(/^```/.test(q)){let J=q.match(/```(\w*)/)[1],K=J?` lang="${J}"`:"";f(),q="";while(!/^```/.test(E[B]))q+="\n"+E[B],B++;B++,G.push(`<pre><code${K}>${q.trim()}</code></pre>`)}else if(/^##?\s/.test(q)){f();let J="<table>\n",K="";if(/^##/.test(q))J+=`<thead><tr>${q.slice(2).trim().split(/\s\s+/).map((M)=>`<th>${O(M.trim())}</th>`).join("")}</tr></thead>\n`;else K+=q.slice(2);while(/^#\s/.test(E[B]))K+="\n"+E[B].slice(2),B++;J+=`<tbody>\n${K.trim().split("\n").map((M)=>`<tr>${M.split(/\s\s+/).map((N)=>`<td>${O(N.trim())}</td>`).join("")}</tr>`).join("\n")}\n</tbody>\n</table>`,G.push(J)}else if(/^-/.test(q)){f();while(E[B]&&!/^[\s]/.test(E[B]))q+="\n"+E[B],B++;let J=q.split("\n"),K="",M=!1;for(let N of J)if(/^-/.test(N)){if(M)K+="</li>\n";let Q=0;for(let S=0;N[S]=="-";S++)Q++;let R=Q-H;while(R<0)R++,K+="</ul>\n";while(R>0)R--,K+="<ul>\n";K+="<li>"+N.slice(Q+1).trim(),M=!0,H=Q}else K+=N;if(M)K+="</li>\n";while(H>0)H--,K+="</ul>";G.push(K)}else if(!q.trim())f();else F+=q+"\n"}return f(),G.join("\n")}function U(C,...E){return C.reduce((z,G,H)=>z+G+(E[H]||""),"")}export{O as pawsupInline,T as pawsup,U as paw};
-
-//# debugId=40C1C8C048BF2DB664756E2164756E21
-//# sourceMappingURL=pawsup.js.map
+// src/pawsup.ts
+function pawsupInline(input) {
+  let result = "";
+  let i = 0;
+  let tag;
+  while (i < input.length) {
+    let char = input[i];
+    if ((tag = char === "*" ? "strong" : char === "_" ? "em" : char === "~" ? "strike" : "") && (i === 0 || !/\s/.test(input[i + 1]))) {
+      let end = -1;
+      for (let j = i + 1;j < input.length; j++) {
+        if (input[j] === char && !/[\s\\]/.test(input[j - 1] ?? " ") && /[\s_*~`]/.test(input[j + 1] ?? " ")) {
+          end = j;
+          break;
+        }
+      }
+      if (end !== -1) {
+        let content = input.slice(i + 1, end);
+        if (!content.trim())
+          result += char + char;
+        else {
+          result += `<${tag}>${pawsupInline(content)}</${tag}>`;
+        }
+        i = end + 1;
+        continue;
+      }
+    } else if (char === "`" && /\s/.test(input[i - 1] ?? " ")) {
+      let end = -1;
+      for (let j = i + 1;j < input.length; j++) {
+        if (input[j] === "`" && !/[\\]/.test(input[j - 1] ?? " ")) {
+          end = j;
+          break;
+        }
+      }
+      if (end !== -1) {
+        tag = "code";
+        let code = input.slice(i + 1, end).replace(/\\`/g, "`");
+        result += `<${tag}>${code}</${tag}>`;
+        i = end + 1;
+        continue;
+      }
+    } else if (/^https?:\/\/[a-zA-Z0-9\-]/.test(input.slice(i))) {
+      let j = i;
+      while (j < input.length && !/\s/.test(input[j]))
+        j++;
+      let url = input.slice(i, j);
+      result += `<a href="${url}">${url}</a>`;
+      i = j;
+      continue;
+    }
+    result += char;
+    i++;
+  }
+  return result;
+}
+function pawsup(input) {
+  let lines = [];
+  let _lines = input.split("\n");
+  for (let i = 0;i < _lines.length; i++) {
+    let line = _lines[i];
+    while (_lines[i] && /\\$/.test(_lines[i])) {
+      line = line.slice(0, -1) + (_lines[++i] ?? "");
+    }
+    lines.push(line);
+  }
+  let output = [];
+  let listIndent = 0;
+  let pAcc = "";
+  let commitP = () => {
+    if (pAcc.trim())
+      output.push(`<p>${pawsupInline(pAcc.trim().replace(/\n/g, "<br>\n"))}</p>`);
+    pAcc = "";
+  };
+  for (let i = 0;i < lines.length; ) {
+    let block = lines[i++];
+    if (/^>/.test(block)) {
+      commitP();
+      let hashes = 0;
+      while (block[hashes] == ">")
+        hashes++;
+      output.push(`<h${hashes}>${pawsupInline(block.slice(hashes).trim())}</h${hashes}>`);
+    } else if (/^\|\s/.test(block)) {
+      commitP();
+      while (/^\|\s/.test(lines[i])) {
+        block += "\n" + lines[i].slice(2);
+        i++;
+      }
+      output.push(`<blockquote>${pawsupInline(block.slice(1).trim())}</blockquote>`);
+    } else if (/^\=\=\=\=*$/.test(block)) {
+      commitP();
+      output.push(`<hr>`);
+    } else if (/^\/\/.*$/.test(block)) {
+      commitP();
+    } else if (/^@\S*$/.test(block)) {
+      commitP();
+      block = block.slice(1);
+      if (/^https?:\/\/.*\.(jpg|png|gif|webp)(\?.*)?$/.test(block)) {
+        output.push(`<img src="${block}">`);
+      }
+    } else if (/^```/.test(block)) {
+      let maybeLang = block.match(/```(\w*)/)[1];
+      let lang = maybeLang ? ` lang="${maybeLang}"` : "";
+      commitP();
+      block = "";
+      while (!/^```/.test(lines[i])) {
+        block += "\n" + lines[i];
+        i++;
+      }
+      i++;
+      output.push(`<pre><code${lang}>${block.trim()}</code></pre>`);
+    } else if (/^##?\s/.test(block)) {
+      commitP();
+      let acc = "<table>\n";
+      let entries = "";
+      if (/^##/.test(block)) {
+        acc += `<thead><tr>${block.slice(2).trim().split(/\s\s+/).map((cell) => `<th>${pawsupInline(cell.trim())}</th>`).join("")}</tr></thead>\n`;
+      } else {
+        entries += block.slice(2);
+      }
+      while (/^#\s/.test(lines[i])) {
+        entries += "\n" + lines[i].slice(2);
+        i++;
+      }
+      acc += `<tbody>\n${entries.trim().split("\n").map((row) => `<tr>${row.split(/\s\s+/).map((cell) => `<td>${pawsupInline(cell.trim())}</td>`).join("")}</tr>`).join("\n")}\n</tbody>\n</table>`;
+      output.push(acc);
+    } else if (/^-/.test(block)) {
+      commitP();
+      while (lines[i] && !/^[\s]/.test(lines[i])) {
+        block += "\n" + lines[i];
+        i++;
+      }
+      let listLines = block.split("\n");
+      let acc = "";
+      let inLi = false;
+      for (let line of listLines) {
+        if (/^-/.test(line)) {
+          if (inLi)
+            acc += "</li>\n";
+          let dashes = 0;
+          for (let j = 0;line[j] == "-"; j++)
+            dashes++;
+          let indentDelta = dashes - listIndent;
+          while (indentDelta < 0) {
+            indentDelta++;
+            acc += "</ul>\n";
+          }
+          while (indentDelta > 0) {
+            indentDelta--;
+            acc += "<ul>\n";
+          }
+          acc += "<li>" + line.slice(dashes + 1).trim();
+          inLi = true;
+          listIndent = dashes;
+        } else {
+          acc += line;
+        }
+      }
+      if (inLi)
+        acc += "</li>\n";
+      while (listIndent > 0) {
+        listIndent--;
+        acc += "</ul>";
+      }
+      output.push(acc);
+    } else {
+      if (!block.trim()) {
+        commitP();
+      } else {
+        pAcc += block + "\n";
+      }
+    }
+  }
+  commitP();
+  return output.join("\n");
+}
+function paw(strings, ...values) {
+  return strings.reduce((result, str, i) => result + str + (values[i] || ""), "");
+}
+export {
+  pawsupInline,
+  pawsup,
+  paw
+};

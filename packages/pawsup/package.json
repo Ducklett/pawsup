@@ -1,10 +1,14 @@
 {
   "name": "pawsup",
   "version": "0.1.0",
-  "module": "src/pawsup.ts",
+  "main": "out/pawsup.js",
+  "types": "out/pawsup.d.ts",
+  "files": [
+    "out/"
+  ],
   "type": "module",
   "scripts": {
-    "build": "bun build ./src/pawsup.ts --minify --sourcemap=linked --outdir=out && tsc src/pawsup.ts --declaration --emitDeclarationOnly --outDir ./out"
+    "build": "bun build ./src/pawsup.ts --outdir=out && tsc src/pawsup.ts --declaration --emitDeclarationOnly --outDir ./out"
   },
   "devDependencies": {
     "@types/bun": "^1.1.9"
