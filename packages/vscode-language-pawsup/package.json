@@ -1,0 +1,51 @@
+{
+  "name": "vscode-language-pawsup",
+  "displayName": "Pawsup",
+  "description": "Pawsup language support for VScode",
+  "version": "0.0.1",
+  "main": "./out/extension.js",
+  "engines": {
+    "vscode": "^1.93.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "pawsup",
+        "aliases": [
+          "Paws Up",
+          "pawsup"
+        ],
+        "icon": {
+          "dark": "icons/paw-icon-dark.png",
+          "light": "icons/paw-icon-light.png"
+        },
+        "extensions": [
+          ".pu",
+          ".paw",
+          ".pawsup"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "pawsup",
+        "scopeName": "pawsup",
+        "path": "./syntaxes/pawsup.tmLanguage.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "pawsup.openPreview",
+        "title": "Pawsup: Open Preview"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.93.0",
+    "typescript": "^5.6.2"
+  }
+}

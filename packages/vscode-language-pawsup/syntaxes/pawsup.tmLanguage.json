@@ -1,0 +1,150 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Paws Up",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#headings"
+    },
+    {
+      "include": "#line-continuation"
+    },
+    {
+      "include": "#formatting"
+    },
+    {
+      "include": "#blockquote"
+    },
+    {
+      "include": "#table"
+    },
+    {
+      "include": "#links"
+    },
+    {
+      "include": "#embeds"
+    },
+    {
+      "include": "#lists"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "name": "comment.line.double-slash",
+      "match": "//.*$"
+    },
+    "headings": {
+      "patterns": [
+        {
+          "name": "markup.heading.1",
+          "match": "^>\\s+(.+)$"
+        },
+        {
+          "name": "markup.heading.2",
+          "match": "^>>\\s+(.+)$"
+        },
+        {
+          "name": "markup.heading.3",
+          "match": "^>>>\\s+(.+)$"
+        },
+        {
+          "name": "markup.heading.4",
+          "match": "^>>>>\\s+(.+)$"
+        },
+        {
+          "name": "markup.heading.5",
+          "match": "^>>>>>\\s+(.+)$"
+        },
+        {
+          "name": "markup.heading.6",
+          "match": "^>>>>>>\\s+(.+)$"
+        }
+      ]
+    },
+    "line-continuation": {
+      "match": "(\\\\)$",
+      "name": "keyword.control.line-continuation"
+    },
+    "formatting": {
+      "patterns": [
+        {
+          "name": "markup.bold",
+          "match": "\\*([^\\*]+)\\*"
+        },
+        {
+          "name": "markup.italic",
+          "match": "_([^_]+)_"
+        },
+        {
+          "name": "entity.name.function",
+          "match": "~([^~]+)~"
+        },
+        {
+          "name": "markup.inline.raw.string.markdown",
+          "match": "`([^`]+)`"
+        }
+      ]
+    },
+    "blockquote": {
+      "name": "markup.quote.markdown",
+      "begin": "^\\|",
+      "end": "$",
+      "patterns": [
+        {
+          "include": "#formatting"
+        }
+      ]
+    },
+    "table": {
+      "patterns": [
+        {
+          "name": "keyword.operator.logical.header",
+          "match": "^##.*$"
+        },
+        {
+          "name": "keyword.operator.logical",
+          "match": "^#.*$"
+        }
+      ]
+    },
+    "links": {
+      "name": "markup.underline.link.markdown",
+      "match": "(https?://\\S+)"
+    },
+    "embeds": {
+      "patterns": [
+        {
+          "name": "markup.embed",
+          "match": "(@)(\\S+)",
+          "captures": {
+            "1": {
+              "name": "entity.name.function"
+            },
+            "2": {
+              "name": "markup.underline.link.markdown"
+            }
+          }
+        }
+      ]
+    },
+    "lists": {
+      "patterns": [
+        {
+          "name": "markup.list",
+          "match": "^(-+)\\s+(.+)$",
+          "captures": {
+            "1": {
+              "name": "punctuation.definition.list.begin.markdown"
+            },
+            "2": {
+              "name": "markup.list.item"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "scopeName": "pawsup"
+}
