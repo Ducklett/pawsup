@@ -1,0 +1,12 @@
+{
+  "name": "pawsup",
+  "version": "0.1.0",
+  "module": "src/pawsup.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "^1.1.9"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
