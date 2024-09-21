@@ -18,7 +18,7 @@ import { pawsupInline, pawsup } from "./pawsup";
 const singleLine = pawsupInline("This is a _formatted_ line. *Wow!*");
 // output: This is a <em>formatted line</em>. <strong>Wow!</strong>
 
-const doc = pawsupInline(`
+const doc = pawsup(`
 > Hello pawsup
 
 This is the document parser.
