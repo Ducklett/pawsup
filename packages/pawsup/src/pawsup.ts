@@ -149,7 +149,7 @@ function pawsup(input: string): string {
             let lang = maybeLang ? ` lang="${maybeLang}"` : ''
             commitP()
             block = ''
-            while (!/^```/.test(lines[i])) {
+            while (!/^```/.test(lines[i] ?? '```')) {
                 block += '\n' + lines[i]
                 i++
             }

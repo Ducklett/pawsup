@@ -670,12 +670,40 @@ describe("Block formatting", () => {
         `
         validate(input, expectedOutput)
     })
+
+    test("Unclosed code block eats every line then exits gracefully", () => {
+        const input = src`
+        \`\`\`
+        const name = "John"
+
+        > foo
+
+        | test
+        | test2
+
+        ## a  b  c
+        #  d  e  f
+
+        `
+        const expectedOutput = src`
+        <pre><code>const name = "John"
+        
+        > foo
+
+        | test
+        | test2
+
+        ## a  b  c
+        #  d  e  f</code></pre>
+        `
+        validate(input, expectedOutput)
+    })
 })
 
 describe("Meta", () => {
     test("Lib size", async () => {
         await Bun.build({
-            entrypoints: ['./pawsup.ts'],
+            entrypoints: ['./src/pawsup.ts'],
             outdir: './out',
             minify: true, // default false
         })
