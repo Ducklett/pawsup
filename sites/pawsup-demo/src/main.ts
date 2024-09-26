@@ -1,6 +1,6 @@
-import { EditorView, basicSetup,  } from "codemirror"
-import { javascript } from "@codemirror/lang-javascript"
+import { EditorView, basicSetup, } from "codemirror"
 import { pawsup } from 'pawsup'
+import hljs from 'highlight.js'
 
 const defaultContent = `
 
@@ -58,16 +58,26 @@ const updateListener = EditorView.updateListener.of(update => {
     }
 });
 
+let debounceTimeout: ReturnType<typeof setTimeout>
 function updatePreview(pawsupSrc: string) {
     const content = pawsup(pawsupSrc)
     previewView.innerHTML = content
+
+    clearTimeout(debounceTimeout)
+    debounceTimeout = setTimeout(() => {
+        previewView.querySelectorAll('pre code[lang]').forEach(block => {
+            block.classList.add(`language-${block.getAttribute('lang')}`)
+            hljs.highlightElement(block as HTMLElement)
+        })
+    }, 500)
 }
+
 updatePreview(defaultContent)
 
 let editor = new EditorView({
     extensions: [//
         basicSetup,
-EditorView.lineWrapping,
+        EditorView.lineWrapping,
         // javascript(),
         updateListener
     ],

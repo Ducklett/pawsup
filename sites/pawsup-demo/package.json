@@ -15,6 +15,7 @@
   "dependencies": {
     "@codemirror/lang-javascript": "^6.2.2",
     "codemirror": "^6.0.1",
+    "highlight.js": "^11.10.0",
     "pawsup": "^0.1.2"
   }
 }
