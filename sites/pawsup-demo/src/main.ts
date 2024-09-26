@@ -45,7 +45,7 @@ Maine coon from Wikipedia: https://en.wikipedia.org/wiki/Maine_Coon
 
 \`\`\`js
 const name = "John"
-console.log(\`Hello ${name}\`)
+console.log(\`Hello \${name}\`)
 \`\`\`
 `.trim()
 
