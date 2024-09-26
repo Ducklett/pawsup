@@ -7,9 +7,13 @@ A tiny markdown inspired markup language built around the following principles:
 - Forkable. Need custom embeds or a new primitive? Vendor the library and add your code! It's all in a single file.
 - Content driven. Sepcifying style or layout is out of scope.
 
+## Demo
+
+https://pawsup.shale.tools/
+
 ## Examples
 
-### Inline Parser 
+### Inline Parser
 
 Good for when you want to enable simple markup for plain text fields.
 

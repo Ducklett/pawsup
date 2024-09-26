@@ -1,0 +1,20 @@
+{
+  "name": "pawsup-demo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "vite": "^5.4.7"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@codemirror/lang-javascript": "^6.2.2",
+    "codemirror": "^6.0.1",
+    "pawsup": "^0.1.2"
+  }
+}

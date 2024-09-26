@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pawsup demo</title>
+</head>
+
+<body>
+    <div class="layout">
+        <h1 style="font-size: 1.2rem; color: #1e293b; margin-left: 1rem; margin-top: 2rem;">Pawsup Demo</h1>
+        <div class="pane-split">
+            <div id="editor"></div>
+            <div id="preview">
+            </div>
+        </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+    <style>
+        /*
+  1. Use a more-intuitive box-sizing model.
+*/
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        /*
+  2. Remove default margin
+*/
+        * {
+            margin: 0;
+        }
+
+        /*
+  Typographic tweaks!
+  3. Add accessible line-height
+  4. Improve text rendering
+*/
+        body {
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /*
+  5. Improve media defaults
+*/
+        img,
+        picture,
+        video,
+        canvas,
+        svg {
+            display: block;
+            max-width: 100%;
+        }
+
+        /*
+  6. Remove built-in form typography styles
+*/
+        input,
+        button,
+        textarea,
+        select {
+            font: inherit;
+        }
+
+        /*
+  7. Avoid text overflows
+*/
+        p,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            overflow-wrap: break-word;
+        }
+
+        html {
+            background-color: #f1f5f9;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        .layout {
+
+            width: min(100%, 1400px);
+            margin-inline: auto;
+
+        }
+
+        .pane-split {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .pane-split>* {
+            flex: 1;
+            border-radius: .25rem;
+            background-color: white;
+            box-shadow: 0px 1px 3px #47556944;
+            overflow: hidden;
+        }
+
+        @media screen and (min-width: 1200px) {
+            .pane-split {
+                flex-direction: row;
+            }
+        }
+
+        #preview {
+            padding: 1rem;
+        }
+
+        #preview :is(h1, h2, h3, h4, h5, h6) {
+            color: #0f172a;
+        }
+
+        #preview :is(p, li, blockquote) {
+            color: #1e293b;
+        }
+
+        .cm-focused {
+            outline: none !important;
+        }
+
+        .ͼ2 .cm-gutters {
+            /* background-color: #f1f5f9; */
+            background-color: white;
+            border-color: #f1f5f9;
+            color: #94a3b8;
+
+        }
+
+        .ͼ1 .cm-scroller {
+            font-family: 'fira code', monospace;
+            color: #1e293b;
+        }
+
+        #preview h1 {
+            font-size: 2em;
+            color: #020617;
+            line-height: 1.1;
+            border-bottom: 1px solid #cbd5e1;
+            margin-bottom: 1em;
+        }
+
+        #preview h2 {
+            font-size: 1.6em;
+            color: #0f172a;
+            border-bottom: 1px solid #cbd5e1;
+            margin-bottom: 0.75em;
+            line-height: 1.1;
+            margin-bottom: 1em;
+        }
+
+        #preview h3 {
+            font-size: 1.4em;
+            color: #1e293b;
+            margin-bottom: 1em;
+        }
+
+        #preview h4 {
+            font-size: 1.2em;
+            color: #1e293b;
+            margin-bottom: 1em;
+        }
+
+        #preview h5 {
+            font-size: 1.1em;
+            color: #1e293b;
+            margin-bottom: 1em;
+        }
+
+        #preview h6 {
+            font-size: 1em;
+            color: #1e293b;
+            margin-bottom: 1em;
+        }
+
+        #preview p {
+            font-size: 1em;
+            line-height: 1.5;
+            color: #334155;
+            /* 700 */
+            margin-bottom: 1.5em;
+        }
+
+        #preview>ul {
+            color: #475569;
+            margin-bottom: 1.5em;
+        }
+
+        #preview blockquote {
+            padding: 1em;
+            border-radius: 4px;
+            border: 1px solid #f59e0b;
+            border-left: 4px solid #d97706;
+            color: #92400e;
+            margin-bottom: 1.5em;
+        }
+
+        #preview table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5em;
+        }
+
+        #preview table {
+            border-collapse: collapse;
+            border-radius: 4px;
+            border-style: hidden;
+            box-shadow: 0 0 0 1px #cbd5e1;
+            width: fit-content;
+        }
+
+        #preview table th,
+        #preview table td {
+            text-align: left;
+            padding: 0.5rem 1rem;
+            font-size: .9rem;
+            border: 1px solid #cbd5e1;
+            color: #334155;
+        }
+
+        #preview a {
+            color: #b45309;
+            text-decoration: underline;
+        }
+
+        #preview strong {
+            font-weight: bold;
+        }
+
+        #preview em {
+            font-style: italic;
+        }
+
+        #preview code {
+            font-family: 'fira code', monospace;
+            background-color: #f1f5f9;
+            /* 100 */
+            color: #334155;
+            /* 700 */
+            padding: 0.2em 0.4em;
+            border-radius: 0.25em;
+        }
+
+        #preview s {
+            text-decoration: line-through;
+            color: #64748b;
+            /* 500 */
+        }
+
+        #preview pre>code {
+            display: block;
+            padding: 1em;
+            background-color: #e2e8f0;
+            /* 200 */
+            color: #1e293b;
+            /* 800 */
+            border-radius: 0.5em;
+            overflow-x: auto;
+        }
+
+        img {
+            border-radius: 4px;
+            border: 1px solid #1e293b;
+        }
+    </style>
+</body>
+
+</html>
